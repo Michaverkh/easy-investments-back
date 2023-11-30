@@ -7,9 +7,9 @@ import {
   BelongsToMany,
   HasOne,
 } from 'sequelize-typescript';
-import { Role } from 'src/modules/roles/roles.model';
-import { UserRoles } from 'src/modules/roles/user-roles.model';
 import { Portfolio } from '../portfolio/models/portfolio.model';
+import { Role } from '../roles/roles.model';
+import { UserRoles } from '../roles/user-roles.model';
 
 interface UserCreationAttrs {
   email: string;

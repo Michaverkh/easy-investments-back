@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  DataType,
-  Table,
-  Model,
-  BelongsTo,
-} from 'sequelize-typescript';
-import { Portfolio } from './portfolio.model';
+import { Column, DataType, Table, Model, HasOne } from 'sequelize-typescript';
+import { PortfolioAsset } from './portfolio-asset.model';
 
 interface AssetCreationAttrs {
   isAsset: boolean;
@@ -43,35 +37,35 @@ export class Asset extends Model<Asset, AssetCreationAttrs> {
 
   @ApiProperty({ example: 1000, description: 'value In Portfolio' })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   valueInPortfolio: number;
 
   @ApiProperty({ example: 1000, description: 'factual Share' })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: true,
   })
   factualShare: number;
 
   @ApiProperty({ example: 1000, description: 'target Share' })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   targetShare: number;
 
   @ApiProperty({ example: 0.5, description: 'rate' })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: true,
   })
   rate: number;
 
   @ApiProperty({ example: 1000, description: 'paymentPerMonth' })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: true,
   })
   paymentPerMonth: number;
@@ -83,6 +77,6 @@ export class Asset extends Model<Asset, AssetCreationAttrs> {
   })
   parent: string;
 
-  @BelongsTo(() => Portfolio)
-  portfolio: Portfolio;
+  @HasOne(() => PortfolioAsset)
+  portfolioAsset: PortfolioAsset;
 }

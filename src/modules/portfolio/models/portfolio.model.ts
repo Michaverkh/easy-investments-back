@@ -6,12 +6,17 @@ import {
   Model,
   HasMany,
   BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
-import { Asset } from './asset.model';
-import { User } from 'src/modules/users/users.model';
+import { PortfolioAsset } from './portfolio-asset.model';
+import { User } from '../../users/users.model';
+
+interface PortfolioCreationAttrs {
+  userId: number;
+}
 
 @Table({ tableName: 'portfolios' })
-export class Portfolio extends Model<Portfolio> {
+export class Portfolio extends Model<Portfolio, PortfolioCreationAttrs> {
   @ApiProperty({ example: '1', description: 'uniq identifier' })
   @Column({
     type: DataType.INTEGER,
@@ -21,9 +26,15 @@ export class Portfolio extends Model<Portfolio> {
   })
   id: number;
 
-  @HasMany(() => Asset)
-  assets: Asset[];
-
   @BelongsTo(() => User)
   user: User;
+
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  userId: number;
+
+  @HasMany(() => PortfolioAsset)
+  portfolioAsset: PortfolioAsset[];
 }
