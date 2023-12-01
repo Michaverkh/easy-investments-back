@@ -4,7 +4,6 @@ import { User } from '../users/users.model';
 import { Asset } from './models/asset.model';
 import { AddAssetDto } from './dto/create-asset.dto';
 import { Portfolio } from './models/portfolio.model';
-import { PortfolioAsset } from './models/portfolio-asset.model';
 
 @Injectable()
 export class PortfolioService {
@@ -12,11 +11,9 @@ export class PortfolioService {
     @InjectModel(User) private userRepository: typeof User,
     @InjectModel(Asset) private assetRepository: typeof Asset,
     @InjectModel(Portfolio) private portfolioRepository: typeof Portfolio,
-    @InjectModel(PortfolioAsset)
-    private portfolioAssetRepository: typeof PortfolioAsset,
   ) {}
 
-  async addAsset(addAssetDto: AddAssetDto): Promise<Portfolio> {
+  async addAsset(addAssetDto: AddAssetDto): Promise<Asset[]> {
     const userId = addAssetDto.userId;
     try {
       let portfolio = await this.portfolioRepository.findOne({
@@ -29,14 +26,22 @@ export class PortfolioService {
         });
       }
 
-      const asset = await this.assetRepository.create(addAssetDto);
-
-      await this.portfolioAssetRepository.create({
-        assetId: asset.id,
+      await this.assetRepository.create({
+        ...addAssetDto,
         portfolioId: portfolio.id,
       });
 
-      return portfolio;
+      const assets = await this.assetRepository.findAll({
+        where: { portfolioId: portfolio.id },
+      });
+
+      // assets.forEach((asset) => {
+      //   asset.valueInPortfolio = 1000;
+
+      //   asset.save();
+      // });
+
+      return assets;
     } catch (error) {
       console.log('add asset error', error.message);
     }

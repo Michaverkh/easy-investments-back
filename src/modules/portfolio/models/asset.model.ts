@@ -1,8 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Table, Model, HasOne } from 'sequelize-typescript';
-import { PortfolioAsset } from './portfolio-asset.model';
+import {
+  Column,
+  DataType,
+  Table,
+  Model,
+  BelongsTo,
+  ForeignKey,
+} from 'sequelize-typescript';
+import { Portfolio } from './portfolio.model';
 
 interface AssetCreationAttrs {
+  portfolioId: number;
   isAsset: boolean;
   name: string;
   valueInPortfolio: number;
@@ -77,6 +85,12 @@ export class Asset extends Model<Asset, AssetCreationAttrs> {
   })
   parent: string;
 
-  @HasOne(() => PortfolioAsset)
-  portfolioAsset: PortfolioAsset;
+  @BelongsTo(() => Portfolio)
+  portfolio: Portfolio;
+
+  @ForeignKey(() => Portfolio)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  portfolioId: number;
 }

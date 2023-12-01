@@ -8,8 +8,8 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { PortfolioAsset } from './portfolio-asset.model';
 import { User } from '../../users/users.model';
+import { Asset } from './asset.model';
 
 interface PortfolioCreationAttrs {
   userId: number;
@@ -35,6 +35,6 @@ export class Portfolio extends Model<Portfolio, PortfolioCreationAttrs> {
   })
   userId: number;
 
-  @HasMany(() => PortfolioAsset)
-  portfolioAsset: PortfolioAsset[];
+  @HasMany(() => Asset)
+  assets: Asset[];
 }

@@ -10,7 +10,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { PortfolioModule } from './modules/portfolio/portfolio.module';
 import { Asset } from './modules/portfolio/models/asset.model';
 import { Portfolio } from './modules/portfolio/models/portfolio.model';
-import { PortfolioAsset } from './modules/portfolio/models/portfolio-asset.model';
 
 @Module({
   controllers: [],
@@ -27,7 +26,7 @@ import { PortfolioAsset } from './modules/portfolio/models/portfolio-asset.model
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role, UserRoles, Asset, Portfolio, PortfolioAsset],
+      models: [User, Role, UserRoles, Asset, Portfolio],
       autoLoadModels: true,
     }),
     UsersModule,
